@@ -98,21 +98,73 @@ As we can see from the close tracking of uproot and awkward-array, nearly all aw
 
 Coffea~\cite{coffea} is a collaboration of Fermilab physicists performing two CMS analyses: a dark Higgs search and a boosted Standard Model Higgs $\to$ $b\bar{b}$. The dark Higgs search is being performed exclusively in awkward-array operations, without call-outs to custom C++ code or Python for-loops over the set of events, and the boosted Higgs is being analyzed in parallel with awkward-array and conventional tools, for comparison. This group is also building specialized tools on top of awkward-array for energy corrections, histogramming, and distributed scale-out.
 
+Although the publication-targeted analyses are still in development, this group also performed a demonstration of a $Z$ mass analysis. The $Z$ mass can be taken as a ``hello world'' of collider physics in that it requires minimal, non-trivial combinatorics: distinct pairs of oppositely charged muons must be combined to form $Z$ boson candidates. This analysis goes beyond a single plot in that it has many realistic corrections---selection of good luminosity blocks, pile-up, ID scale factors, and flavor categorization. The entire analysis was performed in a Jupyter notebook using awkward-array and in a compiled C++ program; see the online repository~\cite{zpeak}. The analysis is expressed in about the same number of lines (350 for awkward-array plus plotting, 400 for C++) and executes in about the same length of time (6~$\mu$s/event/thread for awkward-array, 4~$\mu$s/event/thread for C++). However, the C++ analysis involves more boilerplate (mostly auto-generated) and careful avoidance of segmentation faults. Both analysis programs read the same 25~columns of data from the same ROOT files. Figure~\ref{fig:zpeak} shows a break-down of how wall time was spent in the awkward-array analysis.
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.5\linewidth]{zpeak-performance-breakdown.png}
+\end{center}
+
+\caption{Breakdown of wall time spent in an awkward-array $Z$ mass measurement. \label{fig:zpeak}}
+\end{figure}
 
 
 
 
 
+%% \begin{frame}{Half-hour interviews with physicists about array syntax}
+%% \vspace{0.5 cm}
+%% 1 grad student, 2 postdocs (beginning \& advanced), and 1 advanced researcher
 
+%% \vspace{0.25 cm}
+%% Everyone had most experience in C++ (5~years to decades), less in Python, which was primarily PyROOT (6~months to 3--4 years), very little in Numpy (2~to~5 months).
 
+%% \vspace{0.5 cm}
 
-%% \begin{figure}
+%% \begin{onlyenv}<1>
+%% \vspace{6.5 cm}
+%% \end{onlyenv}
+
+%% \begin{onlyenv}<2>
+%% \textcolor{darkblue}{Some motivated by execution speed, some by ease of use.}
+%% \small
+%% \begin{itemize}
+%% \item ``Thirty minutes is too long to wait for a plot.''
+%% \item ``Will be run order-of-a-hundred times over the course of the year; this is a big investment.'' \textcolor{darkblue}{but} ``For something that could be two times faster, I wouldn't do these optimizations.''
+%% \item ``Ease of use is paramount; I've always struggled with poorly written code.'' \textcolor{darkblue}{and} \\ ``Making it fast to run it again and again is {\it going around} ease of use.''
+%% \item ``Ease of use is most important, even if execution speed decreases.''
+%% \end{itemize}
+%% \vspace{1 cm}
+%% \end{onlyenv}
+
+%% \begin{onlyenv}<3>
+%% \textcolor{darkblue}{Some found it easier, some more difficult.}
+%% \small
+%% \begin{itemize}
+%% \item ``Way, way much easier than applying cuts with for loops.''
+%% \item ``Surprised by how conceptually different you have to think about selections, combining objects.'' \textcolor{darkblue}{but} ``Not good or bad, just surprising that it has a learning curve.''
+%% \item ``Individual problems have been much more difficult than expected.'' \textcolor{darkblue}{and} \\ ``Translating `if' statements is where I get hung up.'' \textcolor{darkblue}{but} \\ ``Not inherently harder; just harder now for those of us used to the `for' loop version.''
+%% \end{itemize}
+%% \vspace{1.5 cm}
+%% \end{onlyenv}
+
+%% \begin{onlyenv}<4-5>
+%% \textcolor{darkblue}{One point came up multiple times: easier to \underline{read} than \underline{write}.}
+%% \small
+%% \begin{itemize}
+%% \item ``The good thing is, once you figure it out, it's clear why it works. It's not magic, you just have to get the mapping right.''
+%% \item ``If I ask a student to read my code, he'll be able to read it. But five minutes later, he'll try something similar and it won't work.''
+%% \end{itemize}
+
+%% \vspace{0.25 cm}
+%% \begin{uncoverenv}<5>
 %% \begin{center}
-%% \includegraphics[width=0.5\linewidth]{zpeak-performance-breakdown.png}
+%% \large \sout{Write-only} Read-only code???
 %% \end{center}
-
-%% \caption{HERE. \label{fig:zpeak}}
-%% \end{figure}
+%% \end{uncoverenv}
+%% \vspace{1.25 cm}
+%% \end{onlyenv}
+%% \end{frame}
 
 
 

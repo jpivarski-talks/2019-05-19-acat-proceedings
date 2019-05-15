@@ -27,27 +27,23 @@
 The need for nested data structures and combinatorial operations on arbitrary length lists has prevented particle physicists from widely adopting data analysis languages, such as R, MATLAB, Numpy, and Pandas. These array frameworks work well for purely rectangular tables and hypercubes, but arrays of variable length arrays, called ``jagged arrays,'' are out of their scope. However, jagged arrays are a fundamental feature of particle physics data, as well as combining them to search for particle decays. To bridge this gap, we have developed the awkward-array library, and in this paper we present feedback from the first physics groups using it for their analyses. They report similar computational performance between analysis code written in C++ and array-based analysis scripts written entirely in Python, and are split on the ease-of-use of array syntax. In a series of four phone interviews, all users noted how different array programming is from imperative programming, but whereas some found it much easier, others said it was more difficult to write, yet easier to read.
 \end{abstract}
 
-\section{Introduction}
+\section{Structure of data in particle physics}
 
 Data analysis software intended for data scientists and big data analyses is mostly designed for simple data that must be cross-correlated in complex ways. By contrast, particle physicists deal with strictly independent events that are nevertheless complex within those events. This allows them more freedom in parallel processing, but they requrie more specialized tools to run in those parallel jobs. Particle physicists usually solve this problem by writing imperative code in a general purpose programming language, typically C++, as the first step in their data analyses.
 
 There is much to be gained from higher level analysis tools, but physicists cannot use them if they do not represent and provide operations for complex data. ``Complex data'' involves several features:
 \begin{itemize}
-\item collections containing variable length arrays, to represent arbitrary numbers of particles per event and similar structures;
+\item collections of variable length arrays, to represent arbitrary numbers of particles per event and similar structures;
 \item nested record types for particle objects;
 \item cross-linked data, such as pointers from jet objects to the tracks that comprise them;
-\item nullable data, though to a lesser extent (masking with a dummy value, such as $-1000$, is common among physicists).
+\item nullable data, such as a parameter value from a fit that did not converge.
 \end{itemize}
 
-stuff\cite{2019EPJWC}
+All of these are easy to deal with as simple numerical types except the first, known as ``jagged arrays.'' Nested record types, such as a {\tt lorentz} field containing objects with {\tt pt}, {\tt phi}, and {\tt eta} fields, could be thought of as a naming convention, as field names containing dots: {\tt lorentz.pt}, {\tt lorentz.phi}, and {\tt lorentz.eta}. Cross-linked data can be---and frequently are---represented as integers indicating positions in another collection (i.e.\ relational normalization with array index position as the surrogate key). Null values in data are usually indicated by a dummy value, such as $-1000$. Therefore, jagged arrays need the most attention.
 
-\begin{figure}
-\begin{center}
-\includegraphics[width=0.5\linewidth]{zpeak-performance-breakdown.png}
-\end{center}
+\section{Jagged arrays and the awkward-array library}
 
-\caption{HERE. \label{fig:zpeak}}
-\end{figure}
+Jagged arrays can be represented in flat arrays without padding or truncation by separating the content from the structure. Figure~\ref{fig:muons} shows the deconstruction of variable numbers of muon objects per event as an example. Each nested record has three fields, which can be placed in separate arrays because nested records are merely a naming convention. The structural part, the fact that the first event has 3 muons, the second has 1, the third has 1, and the fourth has 2, could be recorded in a separate {\tt counts} array. The cumulative sum of {\tt counts}, called {\tt offsets} in the Figure, is more useful because it permits random access: to get the third event (index {\tt 2}), we query {\tt offsets[2]}, which is {\tt 4}. The content for this event starts in $p_T$, phi, and eta arrays at index {\tt 4}.
 
 \begin{figure}
 \begin{center}
@@ -72,17 +68,39 @@ muons = [
 \mbox{\hspace{1 cm}$p_T$} & \textcolor{darkgreen}{\tt \ \ 31.1,\ \ \ 9.76,\ \ \ 8.18,\ \ \ 5.27,\ \ \ 4.72,\ \ \ 8.59, 8.714} \\
 phi &  \textcolor{darkorange}{\tt -0.481,\ -0.123,\ -0.119,\ \ 1.246,\ -0.207,\ -1.754,\ 0.185} \\
 eta &        \textcolor{blue}{\tt \ 0.882,\ \ 0.924,\ \ 0.923,\ -0.991,\ \ 0.953,\ -0.264,\ 0.629} \\\hline
-counts  & \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 1,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2\ \ \ \ \ \ \ \ \ \\\hline
-offsets & \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ \ 7 \\\hline
-starts  & \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5\ \ \ \ \ \ \ \ \ \\
-stops   & \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ 7\ \ \ \ \ \ \ \ \ \\\hline
-parents & \tt \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2,\ \ \ \ \ \ 3,\ \ \ \ \ 3 \\\hline
+{\tt counts}  & \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 1,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2\ \ \ \ \ \ \ \ \ \\\hline
+{\tt offsets} & \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ \ 7 \\\hline
+{\tt starts}  & \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5\ \ \ \ \ \ \ \ \ \\
+{\tt stops}   & \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ 7\ \ \ \ \ \ \ \ \ \\\hline
+{\tt parents} & \tt \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2,\ \ \ \ \ \ 3,\ \ \ \ \ 3 \\\hline
 \end{tabular}
 
 \end{center}
 
-\caption{HERE. \label{fig:muons}}
+\caption{Example of arbitrarily many muon records per event (top code snippet) and their representation as content arrays ($p_T$, phi, eta, bottom table) and structure arrays ({\tt counts}, {\tt offsets}, {\tt starts} and {\tt stops}, or {\tt parents}, bottom table). \label{fig:muons}}
 \end{figure}
+
+Some operations that would require expensive rewrites of serialized data structures, such as {\tt std::vector<std::vector<Muon>>}, are simpler and more efficient in array form. For instance, if the {\tt offsets} are separated into {\tt starts} and {\tt stops} (which overlap for all but the first and last entry), dropping all but the leading and subleading particle in each event is a matter of reassigning {\tt stops = min(stops, starts + 2)}. Operations that reduce the structure of the jagged array, such as selecting the best particle per event, require pointers from the inside out, rather than outside in: the {\tt parents} array associates each content value with the event to which it belongs.
+
+Any of these structure arrays can represent the jagged dataset, so a library named awkward-array was developed to manage {\tt JaggedArrays} as a class with similar properties to Numpy's {\tt ndarray}. The awkward-array library handles all of the data structures physicists regularly use---nested records, cross-linked tables, nullable data---but jagged arrays are its primary application. The design of this library is more fully described in our previous paper\cite{2019EPJWC}.
+
+
+
+
+
+
+
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.5\linewidth]{zpeak-performance-breakdown.png}
+\end{center}
+
+\caption{HERE. \label{fig:zpeak}}
+\end{figure}
+
+
+
 
 \section{Acknowledgments}
 

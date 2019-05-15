@@ -18,9 +18,13 @@ The need for nested data structures and combinatorial operations on arbitrary le
 
 Data analysis software intended for data scientists and big data analyses is mostly designed for simple data that must be cross-correlated in complex ways. By contrast, particle physicists deal with strictly independent events that are nevertheless complex within those events. This allows them more freedom in parallel processing, but they requrie more specialized tools to run in those parallel jobs. Particle physicists usually solve this problem by writing imperative code in a general purpose programming language, typically C++, as the first step in their data analyses.
 
-There is much to be gained from higher level analysis tools, but physicists cannot use them if they do not represent and provide operations for complex data.
-
-
+There is much to be gained from higher level analysis tools, but physicists cannot use them if they do not represent and provide operations for complex data. ``Complex data'' involves several features:
+\begin{itemize}
+\item collections containing variable length arrays, to represent arbitrary numbers of particles per event and similar structures;
+\item nested record types for particle objects;
+\item cross-linked data, such as pointers from jet objects to the tracks that comprise them;
+\item nullable data, though to a lesser extent (masking with a dummy value, such as $-1000$, is common among physicists).
+\end{itemize}
 
 
 

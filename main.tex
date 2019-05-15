@@ -1,16 +1,17 @@
 \documentclass[a4paper]{jpconf}
 \usepackage{graphicx}
+
 \begin{document}
-\title{TITLE}
+\title{Nested data structures in array frameworks}
 
-\author{AUTHOR}
+\author{Jim Pivarski, David Lange, and Peter Elmer}
 
-\address{Production Editor, \jpcs, \iopp, Dirac House, Temple Back, Bristol BS1~6BE, UK}
+\address{Princeton University}
 
-\ead{EMAIL}
+\ead{pivarski@princeton.edu, david.lange@cern.ch, peter.elmer@cern.ch}
 
 \begin{abstract}
-one-line abstract
+The need for nested data structures and combinatorial operations on arbitrary length lists has prevented particle physicists from widely adopting data analysis languages, such as R, MATLAB, and Numpy. These array frameworks work well for purely rectangular tables and hypercubes, but arrays of variable length arrays, called ``jagged arrays,'' are out of their scope. However, jagged arrays are a fundamental feature of particle physics data, as well as combining them to search for particle decays. To bridge this gap, we have developed the awkward-array library, and in this paper we present feedback from the first physics groups using it for their analyses. They report similar computational performance between analysis code written in C++ and array-based analysis scripts written entirely in Python, and are split on the ease-of-use of array syntax. In a series of four phone interviews, all users noted how different array programming is from imperative programming, but whereas some found it much easier, others said it was more difficult to write, yet easier to read.
 \end{abstract}
 
 \section{Introduction}

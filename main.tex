@@ -1,5 +1,18 @@
 \documentclass[a4paper]{jpconf}
 \usepackage{graphicx}
+\usepackage{fancyvrb}
+\usepackage{xcolor}
+
+\xdefinecolor{dianablue}{rgb}{0.18,0.24,0.31}
+\xdefinecolor{darkblue}{rgb}{0.1,0.1,0.7}
+\xdefinecolor{darkgreen}{rgb}{0,0.5,0}
+\xdefinecolor{darkgrey}{rgb}{0.35,0.35,0.35}
+\xdefinecolor{darkorange}{rgb}{0.8,0.5,0}
+\xdefinecolor{darkorange2}{rgb}{1,0.5,0}
+\xdefinecolor{darkred}{rgb}{0.7,0,0}
+\xdefinecolor{darkpink}{rgb}{0.9,0.2,0.6}
+\definecolor{darkgreen}{rgb}{0,0.6,0}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
 
 \begin{document}
 \title{Nested data structures in array frameworks}
@@ -26,9 +39,50 @@ There is much to be gained from higher level analysis tools, but physicists cann
 \item nullable data, though to a lesser extent (masking with a dummy value, such as $-1000$, is common among physicists).
 \end{itemize}
 
-
-
 stuff\cite{2019EPJWC}
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.5\linewidth]{zpeak-performance-breakdown.png}
+\end{center}
+
+\caption{HERE. \label{fig:zpeak}}
+\end{figure}
+
+\begin{figure}
+\begin{center}
+
+\begin{minipage}{0.97\linewidth}
+\small
+\begin{Verbatim}[commandchars=\\\{\},frame=single]
+muons = [
+ [Muon(\textcolor{darkgreen}{31.1}, \textcolor{darkorange}{-0.481}, \textcolor{blue}{0.882}), Muon(\textcolor{darkgreen}{9.76}, \textcolor{darkorange}{-0.124}, \textcolor{blue}{0.924}), Muon(\textcolor{darkgreen}{8.18}, \textcolor{darkorange}{-0.119}, \textcolor{blue}{0.923})],
+ [Muon(\textcolor{darkgreen}{5.27}, \textcolor{darkorange}{1.246}, \textcolor{blue}{-0.991})],
+ [Muon(\textcolor{darkgreen}{4.72}, \textcolor{darkorange}{-0.207}, \textcolor{blue}{0.953})],
+ [Muon(\textcolor{darkgreen}{8.59}, \textcolor{darkorange}{-1.754}, \textcolor{blue}{-0.264}), Muon(\textcolor{darkgreen}{8.714}, \textcolor{darkorange}{0.185}, \textcolor{blue}{0.629})],
+ ...
+]
+\end{Verbatim}
+\end{minipage}
+
+\vspace{0.5 cm}
+\renewcommand{\arraystretch}{1.25}
+\begin{tabular}{| r | l |}
+\hline
+\mbox{\hspace{1 cm}$p_T$} & \textcolor{darkgreen}{\tt \ \ 31.1,\ \ \ 9.76,\ \ \ 8.18,\ \ \ 5.27,\ \ \ 4.72,\ \ \ 8.59, 8.714} \\
+phi &  \textcolor{darkorange}{\tt -0.481,\ -0.123,\ -0.119,\ \ 1.246,\ -0.207,\ -1.754,\ 0.185} \\
+eta &        \textcolor{blue}{\tt \ 0.882,\ \ 0.924,\ \ 0.923,\ -0.991,\ \ 0.953,\ -0.264,\ 0.629} \\\hline
+counts  & \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 1,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2\ \ \ \ \ \ \ \ \ \\\hline
+offsets & \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ \ 7 \\\hline
+starts  & \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5\ \ \ \ \ \ \ \ \ \\
+stops   & \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ 7\ \ \ \ \ \ \ \ \ \\\hline
+parents & \tt \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2,\ \ \ \ \ \ 3,\ \ \ \ \ 3 \\\hline
+\end{tabular}
+
+\end{center}
+
+\caption{HERE. \label{fig:muons}}
+\end{figure}
 
 \section{Acknowledgments}
 

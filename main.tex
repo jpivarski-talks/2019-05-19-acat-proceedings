@@ -11,26 +11,24 @@
 \ead{pivarski@princeton.edu, david.lange@cern.ch, peter.elmer@cern.ch}
 
 \begin{abstract}
-The need for nested data structures and combinatorial operations on arbitrary length lists has prevented particle physicists from widely adopting data analysis languages, such as R, MATLAB, and Numpy. These array frameworks work well for purely rectangular tables and hypercubes, but arrays of variable length arrays, called ``jagged arrays,'' are out of their scope. However, jagged arrays are a fundamental feature of particle physics data, as well as combining them to search for particle decays. To bridge this gap, we have developed the awkward-array library, and in this paper we present feedback from the first physics groups using it for their analyses. They report similar computational performance between analysis code written in C++ and array-based analysis scripts written entirely in Python, and are split on the ease-of-use of array syntax. In a series of four phone interviews, all users noted how different array programming is from imperative programming, but whereas some found it much easier, others said it was more difficult to write, yet easier to read.
+The need for nested data structures and combinatorial operations on arbitrary length lists has prevented particle physicists from widely adopting data analysis languages, such as R, MATLAB, Numpy, and Pandas. These array frameworks work well for purely rectangular tables and hypercubes, but arrays of variable length arrays, called ``jagged arrays,'' are out of their scope. However, jagged arrays are a fundamental feature of particle physics data, as well as combining them to search for particle decays. To bridge this gap, we have developed the awkward-array library, and in this paper we present feedback from the first physics groups using it for their analyses. They report similar computational performance between analysis code written in C++ and array-based analysis scripts written entirely in Python, and are split on the ease-of-use of array syntax. In a series of four phone interviews, all users noted how different array programming is from imperative programming, but whereas some found it much easier, others said it was more difficult to write, yet easier to read.
 \end{abstract}
 
 \section{Introduction}
 
+Data analysis software intended for data scientists and big data analyses is mostly designed for simple data that must be cross-correlated in complex ways. By contrast, particle physicists deal with strictly independent events that are nevertheless complex within those events. This allows them more freedom in parallel processing, but they requrie more specialized tools to run in those parallel jobs. Particle physicists usually solve this problem by writing imperative code in a general purpose programming language, typically C++, as the first step in their data analyses.
+
+There is much to be gained from higher level analysis tools, but physicists cannot use them if they do not represent and provide operations for complex data.
+
+
+
+
+
 stuff\cite{2019EPJWC}
 
-\section{Preparing your paper}
+\section{Acknowledgments}
 
-more stuff
-
-\subsection{Acknowledgments}
-
-of course
-
-\medskip
-\begin{thebibliography}{9}
-\item Strite S and Morkoc H 1992 {\it J. Vac. Sci. Technol.} B {\bf 10} 1237 
-\end{thebibliography}
-\smallskip
+This work was supported by the National Science Foundation under grants ACI-1450377 and PHY-1624356.
 
 \section*{References}
 \bibliography{thebibliography}{}

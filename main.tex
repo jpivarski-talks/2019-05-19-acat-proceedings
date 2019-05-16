@@ -29,13 +29,13 @@ The need for nested data structures and combinatorial operations on arbitrary le
 
 \section{Structure of data in particle physics}
 
-Data analysis software intended for data scientists in industry and academic fields other than particle physics is mostly designed for simple data that must be cross-correlated in complex ways. By contrast, particle physicists deal with strictly independent events that are nevertheless complex within those events. This allows them more freedom in parallel processing, but they they must run more specialized programs in those parallel jobs. Particle physicists usually solve this problem by writing imperative code in a general purpose programming language, typically C++, as the first step in their data analyses.
+Data analysis software intended for data scientists in industry and academic fields other than particle physics is mostly designed for simple data that must be cross-correlated in complex ways. By contrast, particle physicists deal with strictly independent events that are nevertheless complex within those events. This allows them more freedom in parallel processing, but they must run more specialized programs in those parallel jobs. Particle physicists usually solve this problem by writing imperative code in a general purpose programming language, typically C++, as the first step in their data analyses.
 
 There is much to be gained from higher level analysis tools, but they can't be used if they do not represent and provide operations for complex data. By ``complex data,'' we mean:
 \begin{itemize}
 \item collections of variable length arrays, to represent arbitrary numbers of particles per event and similar structures, including variable length arrays inside variable length arrays;
 \item nested record types for particle objects;
-\item cross-linked data, such as pointers from composite objects to those that comprise them;
+\item cross-linked data, such as pointers from composite jets to the tracks that comprise them;
 \item nullable data, such as a parameter value from a fit that did not converge.
 \end{itemize}
 

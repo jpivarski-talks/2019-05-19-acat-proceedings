@@ -48,8 +48,8 @@ Jagged arrays can be represented in flat arrays without padding or truncation by
 \begin{figure}
 \begin{center}
 
-\begin{minipage}{0.97\linewidth}
-\small
+\begin{minipage}{0.81\linewidth}
+\scriptsize
 \begin{Verbatim}[commandchars=\\\{\},frame=single]
 muons = [
  [Muon(\textcolor{darkgreen}{31.1}, \textcolor{darkorange}{-0.481}, \textcolor{blue}{0.882}), Muon(\textcolor{darkgreen}{9.76}, \textcolor{darkorange}{-0.124}, \textcolor{blue}{0.924}), Muon(\textcolor{darkgreen}{8.18}, \textcolor{darkorange}{-0.119}, \textcolor{blue}{0.923})],
@@ -65,14 +65,14 @@ muons = [
 \renewcommand{\arraystretch}{1.25}
 \begin{tabular}{| r | l |}
 \hline
-\mbox{\hspace{1 cm}$p_T$} & \textcolor{darkgreen}{\tt \ \ 31.1,\ \ \ 9.76,\ \ \ 8.18,\ \ \ 5.27,\ \ \ 4.72,\ \ \ 8.59, 8.714} \\
-phi &  \textcolor{darkorange}{\tt -0.481,\ -0.123,\ -0.119,\ \ 1.246,\ -0.207,\ -1.754,\ 0.185} \\
-eta &        \textcolor{blue}{\tt \ 0.882,\ \ 0.924,\ \ 0.923,\ -0.991,\ \ 0.953,\ -0.264,\ 0.629} \\\hline
-{\tt counts}  & \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 1,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2\ \ \ \ \ \ \ \ \ \\\hline
-{\tt offsets} & \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ \ 7 \\\hline
-{\tt starts}  & \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5\ \ \ \ \ \ \ \ \ \\
-{\tt stops}   & \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ 7\ \ \ \ \ \ \ \ \ \\\hline
-{\tt parents} & \tt \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2,\ \ \ \ \ \ 3,\ \ \ \ \ 3 \\\hline
+\small \mbox{\hspace{1 cm}$p_T$} & \textcolor{darkgreen}{\tt \ \ 31.1,\ \ \ 9.76,\ \ \ 8.18,\ \ \ 5.27,\ \ \ 4.72,\ \ \ 8.59, 8.714} \\
+\small phi &  \small \textcolor{darkorange}{\tt -0.481,\ -0.123,\ -0.119,\ \ 1.246,\ -0.207,\ -1.754,\ 0.185} \\
+\small eta &        \small \textcolor{blue}{\tt \ 0.882,\ \ 0.924,\ \ 0.923,\ -0.991,\ \ 0.953,\ -0.264,\ 0.629} \\\hline
+\small {\tt counts}  & \small \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 1,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2\ \ \ \ \ \ \ \ \ \\\hline
+\small {\tt offsets} & \small \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ \ 7 \\\hline
+\small {\tt starts}  & \small \tt \ \ \ \ \ 0,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 3,\ \ \ \ \ \ 4,\ \ \ \ \ \ 5\ \ \ \ \ \ \ \ \ \\
+\small {\tt stops}   & \small \tt \ \ \ \ \ 3,\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ 4,\ \ \ \ \ \ 5,\ \ \ \ \ \ 7\ \ \ \ \ \ \ \ \ \\\hline
+\small {\tt parents} & \small \tt \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 0,\ \ \ \ \ \ 1,\ \ \ \ \ \ 2,\ \ \ \ \ \ 3,\ \ \ \ \ 3 \\\hline
 \end{tabular}
 
 \end{center}
@@ -102,7 +102,7 @@ Although the two analyses targeted for publication are still in development, Nic
 
 \begin{figure}
 \begin{center}
-\includegraphics[width=0.5\linewidth]{zpeak-performance-breakdown.png}
+\includegraphics[width=0.35\linewidth]{zpeak-performance-breakdown.png}
 \end{center}
 
 \caption{Breakdown of wall time spent in an awkward-array $Z$ mass measurement. \label{fig:zpeak}}
@@ -112,73 +112,34 @@ The dark Higgs and boosted Higgs analyses are more complex, but preliminary vers
 
 \section{User experiences with awkward-array}
 
+Although the comparison of array-based and C++ analyses is instructive, it doesn't tell us about the user experience of writing these scripts. For this, we conducted qualitative interviews with the data analysts. All interviews were conducted audio-only over Skype and were strictly a half-hour in length. The participants had each developed a substantial part of an array-based analysis, but were users, not developers, of the Coffea framework tools---we are interested in the experiences of users with physics goals and not too much insider knowledge of the awkward-array framework. Three of the participants work on projects related to Coffea and one used awkward-array in the development of a future dark matter direct detection experiment.
 
+The four participants cover a range of physics experience: 1~is a graduate student, 2~are postdocs (1~beginning, 1~advanced), and 1~is an advanced researcher. Most of their programming experience was in C++, from 5~years to decades), and all had some experience with Python: 6~months to 3--4~years. Most of that Python experience was focused on PyROOT, the Python interface to ROOT. Very few had any experience with Numpy: they ranged from 2 to 5~months, and nearly all of that Numpy experience was through awkward-array.
 
+The participants had different reasons for using awkward-array: some were motivated by fast execution in Python, while others primarily cared about ease-of-use. The following are representative quotations from the interviews:
+\begin{itemize}
+\item ``Thirty minutes is too long to wait for a plot.''
+\item ``This will be run order-of-magnitude a hundred times over the course of the year; this is a big investment.'' {\it And yet,} ``For something that could be two times faster, I wouldn't do these optimizations.''
+\item ``Ease-of-use is paramount; I've always struggled with poorly written code.'' {\it And} ``Making it fast to run it again and again is going around ease of use.''
+\item ``Ease-of-use is most important, even if execution speed decreases.''
+\end{itemize}
 
+Some of the participants found the array-based approach easier than the equivalent loops, but all noted that it is very different, not a mere translation of syntax.
+\begin{itemize}
+\item ``Way, way much easier than applying cuts with for loops.''
+\item ``I was surprised by how conceptually different you have to think about selections, combining objects.'' {\it But} ``Not good or bad, just surprising that it has a learning curve.''
+\item ``Individual problems have been much more difficult than expected.'' {\it And} ``Translating `if' statements is where I get hung up.'' {\it But} ``Not inherently harder; just harder now for those of us used to the `for' loop version.''
+\end{itemize}
 
+One point came up multiple times, unprompted: that the array expressions are easier to read than to write.
+\begin{itemize}
+\item ``The good thing is, once you figure it out, it's clear why it works. It's not magic, you just have to get the mapping right.''
+\item ``If I ask a student to read my code, he'll be able to read it. But five minutes later, he'll try something similar and it won't work.''
+\end{itemize}
 
-Although the same analysis performed with array logic and C++ loops lets us compare a completed analysis, it does not let us compare the user experience of developing the analysis. The time to complete both versions is not a fair comparison---one was necessarily written before the other, and on the second time, the logic is already solved. Instead, we conducted qualitative interviews with the data analysts.
+\section{Conclusions}
 
-
-
-
-
-%% \begin{frame}{Half-hour interviews with physicists about array syntax}
-%% \vspace{0.5 cm}
-%% 1 grad student, 2 postdocs (beginning \& advanced), and 1 advanced researcher
-
-%% \vspace{0.25 cm}
-%% Everyone had most experience in C++ (5~years to decades), less in Python, which was primarily PyROOT (6~months to 3--4 years), very little in Numpy (2~to~5 months).
-
-%% \vspace{0.5 cm}
-
-%% \begin{onlyenv}<1>
-%% \vspace{6.5 cm}
-%% \end{onlyenv}
-
-%% \begin{onlyenv}<2>
-%% \textcolor{darkblue}{Some motivated by execution speed, some by ease of use.}
-%% \small
-%% \begin{itemize}
-%% \item ``Thirty minutes is too long to wait for a plot.''
-%% \item ``Will be run order-of-a-hundred times over the course of the year; this is a big investment.'' \textcolor{darkblue}{but} ``For something that could be two times faster, I wouldn't do these optimizations.''
-%% \item ``Ease of use is paramount; I've always struggled with poorly written code.'' \textcolor{darkblue}{and} \\ ``Making it fast to run it again and again is {\it going around} ease of use.''
-%% \item ``Ease of use is most important, even if execution speed decreases.''
-%% \end{itemize}
-%% \vspace{1 cm}
-%% \end{onlyenv}
-
-%% \begin{onlyenv}<3>
-%% \textcolor{darkblue}{Some found it easier, some more difficult.}
-%% \small
-%% \begin{itemize}
-%% \item ``Way, way much easier than applying cuts with for loops.''
-%% \item ``Surprised by how conceptually different you have to think about selections, combining objects.'' \textcolor{darkblue}{but} ``Not good or bad, just surprising that it has a learning curve.''
-%% \item ``Individual problems have been much more difficult than expected.'' \textcolor{darkblue}{and} \\ ``Translating `if' statements is where I get hung up.'' \textcolor{darkblue}{but} \\ ``Not inherently harder; just harder now for those of us used to the `for' loop version.''
-%% \end{itemize}
-%% \vspace{1.5 cm}
-%% \end{onlyenv}
-
-%% \begin{onlyenv}<4-5>
-%% \textcolor{darkblue}{One point came up multiple times: easier to \underline{read} than \underline{write}.}
-%% \small
-%% \begin{itemize}
-%% \item ``The good thing is, once you figure it out, it's clear why it works. It's not magic, you just have to get the mapping right.''
-%% \item ``If I ask a student to read my code, he'll be able to read it. But five minutes later, he'll try something similar and it won't work.''
-%% \end{itemize}
-
-%% \vspace{0.25 cm}
-%% \begin{uncoverenv}<5>
-%% \begin{center}
-%% \large \sout{Write-only} Read-only code???
-%% \end{center}
-%% \end{uncoverenv}
-%% \vspace{1.25 cm}
-%% \end{onlyenv}
-%% \end{frame}
-
-
-
+The jagged array data structure described in previous reports is now in widespread use, as a dependency of uproot. At least two CMS analyses are using awkward-array and its operations directly, and they find that they can work entirely in Python without a significant loss of performance. However, they find the array syntax surprising and are split on whether it makes analysis easier to develop or simply faster to run, but all of the participants interviewed had minimal familiarity with Numpy, on which the syntax is modeled. It would be interesting to know how new graduate students, without prior experience in C++ or imperative programming, take to the array-based paradigm.
 
 \section{Acknowledgments}
 

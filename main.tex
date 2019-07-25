@@ -87,8 +87,11 @@ Any of these structure arrays can represent the jagged dataset, so a library nam
 The awkward-array library is used by particle physicists; we know this from individual cases (described later in this paper) and in the pattern of download statistics. Figure~\ref{fig:uproot} shows pip-installations on computers whose operating system has ``Scientific'' in its name---variants on CERN and Fermi Scientific Linux. Most of these are batch and login machines for particle physicists, so the download rate is driven by distributed analyses. This rate sometimes spikes for large jobs, so we smooth it with a 30-day window. In the time series, we see a steady increase in uproot~\cite{uproot} usage (reads ROOT~\cite{root} data as arrays) that might be driving a slight increase in Numpy, Matplotlib, and Pandas on these systems. The download rate of awkward-array closely tracks that of uproot, starting when it became a dependency of uproot in version 3.
 
 \begin{figure}
-\includegraphics[width=\linewidth]{pip-scientificlinux-uproot.pdf}
+\begin{center}
+\includegraphics[width=0.9\linewidth]{pip-scientificlinux-uproot-gray.pdf}
+\end{center}
 
+\vspace{-0.25 cm}
 \caption{Download rate (30-day window-averaged pip installations per day) of scientific Python libraries on Scientific Linux machines (almost exclusively used by physicists). \label{fig:uproot}}
 \end{figure}
 
